@@ -1,0 +1,29 @@
+Log prep:
+Dependencies:
+brew update
+brew install imagemagick
+brew install gnu-sed
+pip install requests
+
+OUTPUT EACH SUB DIRECTORY CUSTOM LOG
+gource --output-custom-log october.txt october
+
+PREPEND EACH SUB LOG DIR PATHS WITH SUB LOG NAME
+gsed -i -r "s#(.+)\|#\1|/october#" october.txt
+
+COMBINE EACH SUB LOG INTO MAIN LOG
+cat docs.txt install.txt library.txt october.txt | sort -n > combined.txt
+
+Render Source
+gource combined.txt --seconds-per-day 0.15 --auto-skip-seconds 1 --date-format "%e %B %Y" --disable-bloom --highlight-users --highlight-colour "DE6C26" --hide "filenames"  --hide-root --dir-name-depth 2 --default-user-image october.png --user-scale 3 --user-image-dir avatars
+
+Avatar Manipulation
+Load images
+python import_avatars.py in each git repo, copy .git/avatars from each git repo into main folder with combined.txt
+
+RESIZE
+for file in round/*.png; do convert "$file" -resize 90x90 -gravity center "round/resized/$file"; done;
+
+CIRCULARIZE
+for file in round/*.png; do convert "$file" -alpha on \( +clone -threshold -1 -negate -fill white -draw "circle 45,45,45,0" \) -compose copy_opacity -composite "round/resized/$file"; done
+
