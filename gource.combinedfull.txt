@@ -1,0 +1,16 @@
+[gource]
+auto-skip-seconds=1
+date-format=%e %B %Y
+default-user-image=october.png
+dir-name-depth=2
+file-filter=^/october/(uploads|vendor|app/(?!modules))
+hide=filenames,progress
+hide-bloom=true
+hide-root=true
+highlight-colour=DE6C26
+highlight-users=true
+path=combinedfull.txt
+seconds-per-day=0.15
+user-image-dir=avatars
+user-scale=4
+

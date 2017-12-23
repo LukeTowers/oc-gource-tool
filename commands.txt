@@ -17,6 +17,21 @@ cat docs.txt install.txt library.txt october.txt | sort -n > combined.txt
 Render Source
 gource combined.txt --seconds-per-day 0.15 --auto-skip-seconds 1 --date-format "%e %B %Y" --disable-bloom --highlight-users --highlight-colour "DE6C26" --hide "filenames"  --hide-root --dir-name-depth 2 --default-user-image october.png --user-scale 3 --user-image-dir avatars
 
+Render Source (Combined full)
+gource combinedfull.txt --seconds-per-day 0.15 --auto-skip-seconds 1 --date-format "%e %B %Y" --disable-bloom --highlight-users --highlight-colour "DE6C26" --hide "filenames,progress" --dir-name-depth 2 --default-user-image october.png --user-scale 4 --user-image-dir avatars --hide-root -file-filter ^\/october\/\(uploads\|vendor\|app\/\(\?\!modules\)\) -1920x1080 -o - | ffmpeg -y -r 60 -f image2pipe -vcodec ppm -i - -vcodec libx264 -preset ultrafast -pix_fmt yuv420p -crf 1 -threads 0 -bf 0 final.mp4
+
+
+
+Render Source (OctoberFull)
+gource octoberfull.txt --seconds-per-day 0.15 --auto-skip-seconds 1 --date-format "%e %B %Y" --disable-bloom --highlight-users --highlight-colour "DE6C26" --hide "filenames"  --dir-name-depth 2 --default-user-image october.png --user-scale 3 --user-image-dir avatars
+
+
+gource combinedfull.txt --seconds-per-day 0.15 --auto-skip-seconds 1 --date-format "%e %B %Y" --disable-bloom --highlight-users --highlight-colour "DE6C26" --hide "filenames,progress" --dir-name-depth 2 --default-user-image october.png --user-scale 4 --user-image-dir avatars --hide-root -file-filter ^\/october\/\(uploads\|vendor\|app\/\(\?\!modules\)\) -1920x1080 -o - | ffmpeg -y -r 60 -f image2pipe -vcodec ppm -i - -vcodec libx264 -preset ultrafast -pix_fmt yuv420p -crf 1 -threads 0 -bf 0 final.mp4
+
+
+To MP4:
+gource() -1920x1080 -o - | ffmpeg -y -r 60 -f image2pipe -vcodec ppm -i - -vcodec libx264 -preset ultrafast -pix_fmt yuv420p -crf 1 -threads 0 -bf 0 final.mp4
+
 Avatar Manipulation
 Load images
 python import_avatars.py in each git repo, copy .git/avatars from each git repo into main folder with combined.txt
@@ -26,4 +41,6 @@ for file in round/*.png; do convert "$file" -resize 90x90 -gravity center "round
 
 CIRCULARIZE
 for file in round/*.png; do convert "$file" -alpha on \( +clone -threshold -1 -negate -fill white -draw "circle 45,45,45,0" \) -compose copy_opacity -composite "round/resized/$file"; done
+
+
 
